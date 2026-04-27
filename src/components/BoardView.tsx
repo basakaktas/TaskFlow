@@ -114,6 +114,15 @@ function SortableCard({
           ))}
         </div>
       )}
+      <button
+        type="button"
+        className="mt-3 block w-full rounded-lg bg-slate-700 px-3 py-1.5 text-xs text-slate-200 sm:hidden"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        Move
+      </button>
       <p className="text-xs text-slate-500 mt-2">Double-click to edit</p>
     </div>
   );
