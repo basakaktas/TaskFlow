@@ -23,6 +23,7 @@ import { getLabelColorClass } from "@/lib/labelUtils";
 import { CardModal } from "./CardModal";
 import ColumnHeader from "./ColumnHeader";
 import { formatDateDisplay, isOverdue } from "@/lib/dateUtils";
+import { Columns } from "lucide-react";
 
 type Card = {
   id: string;
@@ -44,10 +45,14 @@ function SortableCard({
   card,
   disabled = false,
   onEdit,
+  columns,
+  boardId,
 }: {
   card: Card;
   disabled?: boolean;
   onEdit: (card: Card) => void;
+  columns: Column[];
+  boardId: string;
 }) {
   const {
     attributes,
@@ -117,11 +122,30 @@ function SortableCard({
       <button
         type="button"
         className="mt-3 block w-full rounded-lg bg-slate-700 px-3 py-1.5 text-xs text-slate-200 sm:hidden"
-        onClick={(e) => {
+        onClick={async (e) => {
           e.stopPropagation();
+
+          const currentIndex = columns.findIndex(
+            (column) => column.id === card.columnId
+          );
+
+          if (currentIndex === -1) return;
+
+          const nextColumn = columns[currentIndex + 1];
+
+          if (!nextColumn) return;
+
+          await moveCard({
+            cardId: card.id,
+            newColumnId: nextColumn.id,
+            newPosition: nextColumn.cards.length,
+            boardId,
+            sourceOrderedIds: [],
+            targetOrderedIds: [...nextColumn.cards.map((c) => c.id), card.id],
+          });
         }}
       >
-        Move
+        Move →
       </button>
       <p className="text-xs text-slate-500 mt-2">Double-click to edit</p>
     </div>
@@ -130,11 +154,13 @@ function SortableCard({
 
 function DroppableColumn({
   column,
+  columns,
   boardId,
   isDisabled = false,
   onEditCard,
 }: {
   column: Column;
+  columns: Column[];
   boardId: string;
   isDisabled?: boolean;
   onEditCard: (card: Card) => void;
@@ -184,6 +210,8 @@ function DroppableColumn({
               card={card}
               disabled={isDisabled}
               onEdit={onEditCard}
+              columns={columns}
+              boardId={boardId}
             />
           ))}
         </div>
@@ -423,6 +451,7 @@ export default function BoardView({
             <DroppableColumn
               key={column.id}
               column={column}
+              columns={localColumns}
               boardId={boardId}
               isDisabled={isMoving}
               onEditCard={setEditingCard}
