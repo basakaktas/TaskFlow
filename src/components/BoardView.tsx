@@ -70,6 +70,8 @@ function SortableCard({
     disabled,
   });
 
+  const [showMoveOptions, setShowMoveOptions] = useState(false);
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -119,34 +121,51 @@ function SortableCard({
           ))}
         </div>
       )}
-      <button
-        type="button"
-        className="mt-3 block w-full rounded-lg bg-slate-700 px-3 py-1.5 text-xs text-slate-200 sm:hidden"
-        onClick={async (e) => {
-          e.stopPropagation();
+      <div className="mt-3 sm:hidden">
+        <button
+          type="button"
+          className="w-full rounded-lg bg-slate-700 px-3 py-1.5 text-xs text-slate-200"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowMoveOptions((prev) => !prev);
+          }}
+        >
+          Move
+        </button>
 
-          const currentIndex = columns.findIndex(
-            (column) => column.id === card.columnId
-          );
+        {showMoveOptions && (
+          <div className="mt-2 space-y-1 rounded-lg bg-slate-900 p-2">
+            {columns
+              .filter((column) => column.id !== card.columnId)
+              .map((column) => (
+                <button
+                  key={column.id}
+                  type="button"
+                  className="block w-full rounded-md px-3 py-2 text-left text-xs text-slate-200 hover:bg-slate-700"
+                  onClick={async (e) => {
+                    e.stopPropagation();
 
-          if (currentIndex === -1) return;
+                    await moveCard({
+                      cardId: card.id,
+                      newColumnId: column.id,
+                      newPosition: column.cards.length,
+                      boardId,
+                      sourceOrderedIds: [],
+                      targetOrderedIds: [
+                        ...column.cards.map((c) => c.id),
+                        card.id,
+                      ],
+                    });
 
-          const nextColumn = columns[currentIndex + 1];
-
-          if (!nextColumn) return;
-
-          await moveCard({
-            cardId: card.id,
-            newColumnId: nextColumn.id,
-            newPosition: nextColumn.cards.length,
-            boardId,
-            sourceOrderedIds: [],
-            targetOrderedIds: [...nextColumn.cards.map((c) => c.id), card.id],
-          });
-        }}
-      >
-        Move →
-      </button>
+                    setShowMoveOptions(false);
+                  }}
+                >
+                  Move to {column.title}
+                </button>
+              ))}
+          </div>
+        )}
+      </div>
       <p className="text-xs text-slate-500 mt-2">Double-click to edit</p>
     </div>
   );
