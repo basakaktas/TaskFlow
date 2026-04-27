@@ -406,7 +406,7 @@ export default function BoardView({
         }}
         onDragEnd={handleDragEnd}
       >
-        <div className={`flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory ${isMoving ? "opacity-75" : ""}`}>
+        <div className={`flex gap-4 overflow-x-auto no-scrollbar pb-4 snap-x snap-mandatory scroll-smooth ${isMoving ? "opacity-75" : ""}`}>
           {isMoving && (
             <div className="fixed inset-0 bg-black/20 pointer-events-none z-40" />
           )}
