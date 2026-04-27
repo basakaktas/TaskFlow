@@ -75,7 +75,7 @@ Each card has a `position` field stored in the database.
 ### 1. Clone the project
 
 ```bash
-git clone https://github.com/your-username/taskflow.git
+git clone https://github.com/basakaktas/TaskFlow.git
 cd taskflow
 ```
 
