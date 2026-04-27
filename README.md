@@ -1,36 +1,144 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 TaskFlow — Kanban Project Management Board
 
-## Getting Started
+TaskFlow is a modern Kanban-style task management application inspired by tools like Trello. It allows users to create boards, organize tasks into columns, and manage workflows using drag-and-drop interactions.
 
-First, run the development server:
+---
+
+## ✨ Features
+
+* 🔐 Authentication with Google (NextAuth)
+* 📋 Create, rename, and delete boards
+* 🧱 Dynamic columns (To Do, In Progress, Done, etc.)
+* 📝 Create and manage task cards
+* 🔄 Drag & drop cards between columns
+* 📊 Persistent ordering (state is saved in database)
+* 🏷️ Label support for cards
+* 📱 Responsive design (works on different screen sizes)
+
+---
+
+## 🧠 Key Design Decisions
+
+### Drag & Drop Library
+
+The project uses **dnd-kit** for drag-and-drop functionality because:
+
+* It is actively maintained
+* Lightweight and flexible
+* Works well with modern React (including Next.js)
+
+---
+
+### Data Persistence & Ordering
+
+Each card has a `position` field stored in the database.
+
+* When cards are reordered, their positions are recalculated and saved
+* This ensures that order is preserved even after page refresh
+
+---
+
+### Architecture
+
+* **Frontend:** Next.js (App Router)
+* **Backend:** Next.js Server Actions
+* **Database:** PostgreSQL (via Prisma ORM)
+* **Authentication:** NextAuth (Google OAuth)
+
+---
+
+## 🗄️ Database Structure
+
+* **User → Board → Column → Card**
+* Cards belong to columns
+* Columns belong to boards
+* Boards belong to users
+* Labels can be attached to cards
+
+---
+
+## ⚙️ Tech Stack
+
+* Next.js 16
+* React
+* TypeScript
+* Prisma ORM
+* PostgreSQL (Neon)
+* NextAuth
+* dnd-kit
+* Tailwind CSS
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the project
+
+```bash
+git clone https://github.com/your-username/taskflow.git
+cd taskflow
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Setup environment variables
+
+Create a `.env` file:
+
+```env
+DATABASE_URL=your_database_url
+NEXTAUTH_SECRET=your_secret
+GOOGLE_CLIENT_ID=your_google_id
+GOOGLE_CLIENT_SECRET=your_google_secret
+```
+
+---
+
+### 4. Run database
+
+```bash
+npx prisma migrate dev
+npx prisma generate
+```
+
+---
+
+### 5. Start development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📦 Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The project is deployed on **Vercel**.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🎯 Project Scope (48 Hours)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Due to time constraints, the focus was on:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* Reliable drag-and-drop functionality
+* Persistent ordering
+* Clean database structure
+* Core Kanban features
 
-## Deploy on Vercel
+Instead of implementing many incomplete features, priority was given to stability and usability.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔮 Future Improvements
+
+* 👥 Board collaboration (multi-user)
+* 🕒 Activity history tracking
+* 📅 Due date reminders
+* 🔍 Search and filtering
+* ⚡ Real-time updates
+
