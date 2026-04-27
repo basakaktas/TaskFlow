@@ -144,7 +144,7 @@ function DroppableColumn({
   return (
     <div
       ref={setNodeRef}
-      className={`flex min-h-[70vh] w-72 shrink-0 flex-col rounded-2xl p-4 transition ${
+      className={`snap-start flex min-h-[70vh] w-[90vw] max-w-[350px] shrink-0 flex-col rounded-2xl p-4 transition sm:w-72 ${
         isOver ? "bg-slate-800" : "bg-slate-900"
       } ${isDisabled ? "opacity-50 pointer-events-none" : ""}`}
     >
@@ -406,7 +406,7 @@ export default function BoardView({
         }}
         onDragEnd={handleDragEnd}
       >
-        <div className={`flex gap-4 overflow-x-auto ${isMoving ? "opacity-75" : ""}`}>
+        <div className={`flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory ${isMoving ? "opacity-75" : ""}`}>
           {isMoving && (
             <div className="fixed inset-0 bg-black/20 pointer-events-none z-40" />
           )}

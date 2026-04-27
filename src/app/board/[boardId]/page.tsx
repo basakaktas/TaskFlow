@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import BoardView from "@/components/BoardView";
-import { deleteBoard, renameBoard } from "@/lib/actions/board";
 import BoardActions from "@/components/BoardActions";
 import ColumnManager from "@/components/ColumnManager";
 
@@ -50,13 +49,18 @@ export default async function BoardPage({
   }
 
   return (
-    <main className="min-h-screen bg-slate-950 p-8 text-white">
-      <div className="mb-6 flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold">{board.title}</h1>
-        <BoardActions boardId={board.id} title={board.title} />
+    <main className="min-h-screen bg-slate-950 p-4 text-white sm:p-8">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="truncate text-2xl font-bold sm:text-3xl">
+          {board.title}
+        </h1>
+
+        <div className="flex flex-wrap gap-2">
+          <BoardActions boardId={board.id} title={board.title} />
+        </div>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-4">
         <ColumnManager boardId={boardId} columnCount={board.columns.length} />
       </div>
 
